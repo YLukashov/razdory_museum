@@ -194,7 +194,7 @@ def print_news(update, context):
 
 if __name__ == '__main__':
     # Передайте токен вашего бота.
-    updater = Updater("5327336439:AAE_OZh-pYtvxDjHXaVayKpLqYVI9LsZOCo")
+    updater = Updater(TOKEN)
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
