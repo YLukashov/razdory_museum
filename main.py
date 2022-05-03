@@ -123,17 +123,18 @@ def button(update, _):
 
     elif variant == '4':
         query.edit_message_text(text="Металл - https://disk.yandex.ru/d/c-q57DXGyLkIcg \n"
-                                "Документы - https://disk.yandex.ru/d/IdcQ5wX3LUht6w \n"
-                                "Казачество - https://disk.yandex.ru/d/NG7NGOCTL-LZPQ")
+                                     "Документы - https://disk.yandex.ru/d/IdcQ5wX3LUht6w \n"
+                                     "Казачество - https://disk.yandex.ru/d/NG7NGOCTL-LZPQ")
 
     elif variant == '5':
         query.edit_message_text(text="Археологические памятники - http://museum-razdory.ru/arch-001.pdf \n"
-                                "Древний человек - http://museum-razdory.ru/arch-010.pdf \n"
-                                "Палеонтология - http://museum-razdory.ru/arch-012.pdf")
+                                     "Древний человек - http://museum-razdory.ru/arch-010.pdf \n"
+                                     "Палеонтология - http://museum-razdory.ru/arch-012.pdf")
 
     menu()
 
-def menu (update, _):
+
+def menu(update, _):
     keyboard = [
         [
             InlineKeyboardButton("FAQ", callback_data='1'),
@@ -148,15 +149,19 @@ def menu (update, _):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Что Вам интересно?:', reply_markup=reply_markup)
 
+
 def help_command(update, _):
     update.message.reply_text(
         "👋 Добро пожаловать @musrazdory_bot — Удобный бот для получения необходимой информации о "
         "Раздорском этнографическом музее-заповеднике.  Вся дополнительная информация на "
-        "официальном сайте http://museum-razdory.ru/about/ Для того, чтобы начать: /start Чтобы "
+        "официальном сайте http://museum-razdory.ru/about/ Для того, чтобы начать: /start. Чтобы "
         "узнать последнюю новость: /news 0(можно вводить от 0 до N, зависит от даты новости, "
-        "которую хотите получить) Также, информацию можно получить путем нажатия на соответсвующие"
+        "которую хотите получить). Чтобы "
+        "узнать информацию о выставках: /exhibit 0(можно вводить от 0 до N)"
+        " Также, информацию можно получить путем нажатия на соответсвующие"
         " кнопки Бот запустился совсем недавно, и могут быть недоработки. Если вы найдете любые "
         "баги или опечатки, напишите, пожалуйста, нашей поддержке: @ndadima, @gem_as")
+
 
 def print_news(update, context):
     a = int(context.args[0])
@@ -209,7 +214,8 @@ def print_exhibit(update, context):
         s = t.find(s_text)
         all_txt = t[f:s]
 
-        not_in_text = ["</div>", "<br>", "<div>", "<!-----  ПОЛНЫЙ ТЕКСТ   ----->", 'a href="/about/news.php">']
+        not_in_text = ["</div>", "<br>", "<div>", "<!-----  ПОЛНЫЙ ТЕКСТ   ----->", 'a href="/about/news.php">',
+                       '&quot']
         for i in not_in_text:
             all_txt = all_txt.replace(i, "")
 
@@ -224,14 +230,14 @@ def print_exhibit(update, context):
         if text[0] == "<":
             zak = text.find(">")
             text = text.replace(text[0:zak + 1], "")
-        print(text)
+        update.message.reply_text(text)
     else:
         update.message.reply_text("НОМЕРА С ТАКОЙ ВЫСТАВКОЙ НЕТ. ПОВТОРИТЕ ПОПЫТКУ")
 
 
 if __name__ == '__main__':
     # Передайте токен вашего бота.
-    updater = Updater(TOKEN)
+    updater = Updater("token")
 
     updater.dispatcher.add_handler(CommandHandler('start', start))
     updater.dispatcher.add_handler(CallbackQueryHandler(button))
